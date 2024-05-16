@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var container = document.getElementById('ing-filter-container')
+        document.getElementById('ing-filter-src').addEventListener('focusout', function(event) {
+          setTimeout(function() {
+            container.style.display = 'none'
+          }, 500);
+        })  
+        document.getElementById('ing-filter-src').addEventListener('keyup', function() {
+          var searchValue = this.value.toLowerCase()
+          var divs = document.getElementById('ing-filter-inner').getElementsByTagName('div')
+          
+          container.style.display = 'block'
+          for (var i = 0; i < divs.length; i++) {
+            var text = divs[i].textContent.toLowerCase()
+            if (text.includes(searchValue)) {
+              divs[i].style.display = 'block'
+            } else {
+              divs[i].style.display = 'none'
+            }
+          }
+        })
+      })
+      document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('sortButtonIngredients').addEventListener('click', function() {
+        var sortDirection = document.getElementById('sortDirection2').value;
+        var url = "?nring_asc=" + sortDirection;
+        console.log(sortDirection)
+        window.location.href = url;
+        console.log(url)
+    });
+    document.getElementById('sortButtonSkillLevel').addEventListener('click', function() {
+        var sortDirection = document.getElementById('sortDirection1').value;
+        var url = "?skill_sorted=" + sortDirection;
+        window.location.href = url;
+    });
+});
+
+
+    </script>
+</head>
+<body>
+    <div class="two">
+        <h1>CoulinaryBook.net
+          <span>Food Fantasy World</span>
+        </h1>
+      </div>
+    <div>
+        <a class="home-button" href="/index.html">HOME PAGE</a>
+        <br>
+        <form action="/" class="search-bar" method="get">
+                <div class="src-container">
+                    <input type="search" placeholder="Search.." name="search">
+                    <button class="search-btn" type="submit">
+                        <span>Search</span>
+    </div>
+    <input class="ing-filter-src" type="text" id="ing-filter-src" placeholder="Search">
+    <div class="ing-filter-container" id='ing-filter-container'>
+      <div class="ing-filter-inner" id='ing-filter-inner'>
+        {% for record in ing_data %}
+          <div class='is'><a href="?ing_filter={{ record.ing_id }}">{{ record.ing_name }}</a></div>
+        {% endfor %}
+      </div>
+    </div>
+    <div>
+  </div>  
+    <div class="table-wrapper">
+            <table class="fl-table">
+            <thead>
+            <tr>
+                <th>Recipe Name</th>
+                <th>Preparation Time</th>
+                <th>
+                  Skill Level
+                  <select id="sortDirection1">
+                      <option value="asc">Ascendent</option>
+                      <option value="desc">Descendent</option>
+                  </select>
+                  <a id="sortButtonSkillLevel" href="#">Sort</a>
+              </th>
+              
+              <th>
+                Nr. of ingredients
+                <select id="sortDirection2">
+                    <option value="asc">Ascendent</option>
+                    <option value="desc">Descendent</option>
+                </select>
+                <a id="sortButtonIngredients" href="#">Sort</a>
+            </th>            
+                <th>Author</th>
+                <th>Mai multe Detalii</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in paginated_result %}
+                <tr>
+                    <td>{{ record.recipe_name }}</td>
+                    <td>{{ record.preparation_time }}</td>
+                    <td>{{ record.skill_level }}</td>
+                    <td>{{ record.ingredients_count }}</td>
+                    <td class="author-column">{% if record.author_name %}<a href="author_recipies.html?author_recipies={{ record.author_id }}">{{ record.author_name }}</a>{% else %}Without Author{% endif %}</td>
+                    <td class="author-column"><a href="?recipe_details={{record.rcp_id}}" target="_blank">Vezi Detalii</a></td>
+                </tr>
+                
+            {% endfor %}
+            <tbody>
+        </table>
+    </div>
+
+    <div class="paginification">
+        {% for i in range(start_page, end_page + 1) %}
+            <a href="/nring_asc.html?nring_asc={{ status }}&page={{ i }}">{{ i }}</a>
+        {% endfor %}
+    </div>
+    <div class="main">
+        <ul class="cards">
+          <li class="cards_item">
+            <div class="card">
+              <div class="card_image"><img src="https://assets.codepen.io/652/photo-1468777675496-5782faaea55b.jpeg" alt="mixed vegetable salad in a mason jar. "></div>
+              <div class="card_content">
+                <h2 class="card_title">Most Common Ingredients</h2>
+                <div class="card_text">
+                    <div class="card-information">
+                        {% for record in ingredient_cnt %}
+                        <ul>
+                            <li><p>{{ record.ingredient }} >> nr. of ingredients = {{ record.recipe_count }}</p></li>
+                        </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+            </div>
+          </li>
+      
+          <li class="cards_item">
+            <div class="card">
+              <div class="card_image"><img src="https://assets.codepen.io/652/photo-1520174691701-bc555a3404ca.jpeg" alt="a Reuben sandwich on wax paper. "></div>
+              <div class="card_content">
+                <h2 class="card_title">Most Prolific Authors</h2>
+                <div class="card_text">
+                    <div class="card-information">
+                        {% for record in author_cnt %}
+                            <ul>
+                                <li><p>{{ record.author_name }} >> nr. of wrote recipes = {{ record.recipe_nr }}</p></li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="cards_item">
+            <div class="card">
+              <div class="card_image"><img src="https://assets.codepen.io/652/photo-1544510808-91bcbee1df55.jpeg" alt="A side view of a plate of figs and berries. "></div>
+              <div class="card_content">
+                <h2 class="card_title">Most Complex Recipes</h2>
+                <div class="card_text">
+                    <div class="card-information">
+                    {% for record in MostComplex_recipes %} 
+                    <ul>
+                        <li><p>{{ record.recipes_names }}</p></li>
+                    </ul>
+                    {% endfor %}
+                    </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+</body>
+</html>

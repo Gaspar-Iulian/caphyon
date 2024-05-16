@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div class="two">
+        <h1>Searched result
+          <span>Food Fantasy World</span>
+        </h1>
+      </div>
+      <a class="home-button" href="/index.html">HOME PAGE</a>
+    <div>
+        <br>
+        <form action="/" class="search-bar" method="get">
+                <div class="src-container">
+                    <input type="search" placeholder="Search.." name="search">
+                    <button class="search-btn" type="submit">
+                        <span>Search</span>
+    </div>
+</div>
+    <div class="table-wrapper">
+        <table class="fl-table">
+        <thead>
+        <tr>
+            <th>Recipe Name</th>
+            <th>Preparation Time</th>
+            <th>Skill level</th>
+            <th>Nr. of ingredients</th>
+            <th>Author</th>
+            <th>More Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record in search_results %}
+            <tr>
+                <td>{{ record.recipe_name }}</td>
+                <td>{{ record.preparation_time }}</td>
+                <td>{{ record.skill_level }}</td>
+                <td>{{ record.ingredients_count }}</td>
+                <td class="author-column">{% if record.author_name %}<a href="?author_recipies={{ record.author_id }}">{{ record.author_name }}</a>{% else %}Without Author{% endif %}</td>
+                <td class="author-column"><a href="?recipe_details={{record.recipe_id}}" target="_blank">Vezi Detalii</a></td>
+            </tr>
+            
+        {% endfor %}
+        <tbody>
+    </table>
+</div>
+    
+    <div class="paginification">
+        {% if total_pages > 1 %}
+            {% for i in range(1, total_pages + 1) %}
+                <a href="/search_results.html?search={{ search_query }}&page={{ i }}">{{ i }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+ <link rel="stylesheet" href="../styles/style.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var container = document.getElementById('ing-filter-container')
+        document.getElementById('ing-filter-src').addEventListener('focusout', function(event) {
+          setTimeout(function() {
+            container.style.display = 'none'
+          }, 500);
+        })  
+        document.getElementById('ing-filter-src').addEventListener('keyup', function() {
+          var searchValue = this.value.toLowerCase()
+          var divs = document.getElementById('ing-filter-inner').getElementsByTagName('div')
+          
+          container.style.display = 'block'
+          for (var i = 0; i < divs.length; i++) {
+            var text = divs[i].textContent.toLowerCase()
+            if (text.includes(searchValue)) {
+              divs[i].style.display = 'block'
+            } else {
+              divs[i].style.display = 'none'
+            }
+          }
+        })
+      })
+</script>
+</head>
+<body>
+    <div class="two">
+        <h1>CoulinaryBook.net
+          <span>Food Fantasy World</span>
+        </h1>
+      </div>
+    <div>
+        <a class="home-button" href="/index.html">HOME PAGE</a>
+        <br>
+        <form action="/" class="search-bar" method="get">
+                <div class="src-container">
+                    <input type="search" placeholder="Search.." name="search">
+                    <button class="search-btn" type="submit">
+                        <span>Search</span>
+    </div>
+</div>
+<input class="ing-filter-src" type="text" id="ing-filter-src" placeholder="Type your ingredient">
+<div class="ing-filter-container" id='ing-filter-container'>
+  <div class="ing-filter-inner" id='ing-filter-inner'>
+    {% for record in ing_data %}
+      <div class='is'><a href="?ing_filter={{ record.ing_id }}">{{ record.ing_name }}</a></div>
+    {% endfor %}
+  </div>
+</div>
+</div> 
+
+    <div class="table-wrapper">
+            <table class="fl-table">
+            <thead>
+            <tr>
+                <th><a>Recipe Name</a></th>
+                <th>Preparation Time</th>
+                <th>Skill level</th>
+                <th>More Details</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for record in search_results %}
+                    <tr>
+                        <td>{{ record.recipe_name }}</td>
+                        <td>{{ record.preparation_time }}</td>
+                        <td>{{ record.skillLevel }}</td>
+                        <td class="author-column"><a href="?recipe_details={{record.rcp_id}}" target="_blank">More Details</a></td>
+
+                    </tr>
+                    
+                {% endfor %}
+                <tbody>
+        </table>
+        <div class="paginification">
+            {% if total_pages > 1 %}
+                {% for i in range(1, total_pages + 1) %}
+                    <a href="/ing_filter.html?ing_filter={{ ing_id }}&page={{ i }}">{{ i }}</a>   
+                {% endfor %}
+            {% endif %}
+        </div>
+</html>

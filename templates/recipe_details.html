@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Detail</title>
+ <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div class="two">
+        <h1>CoulinaryBook.net
+          <span>Food Fantasy World</span>
+        </h1>
+      </div>
+    <div>
+        <a class="home-button" href="/index.html">HOME PAGE</a>
+        <br>
+  </div>  
+    <div class="table-wrapper">
+        <h1>Recipe Details</h1>
+            <table class="rc-table">
+            <tbody>
+            {% for record in recipe_result %}
+                <tr>
+                    <td>Recipe Name</td> <td>{{ record.rcp_name }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td><td>{{ record.recipe_description }}</td>
+                </tr>
+                <tr>    
+                    <td>Cooking time</td><td>{{ record.recipe_preparationTime }}</td>
+                </tr>
+                <tr>    
+                    <td>Preparation time</td><td>{{ record.recipe_cookingTime }}</td>
+                </tr>
+                <tr>    
+                    <td>Ingredients </td><td>{{ record.ingredients}}</td>
+                </tr>
+                <tr>    
+                    <td>Collection</td><td>{{ record.collections }}</td>
+                </tr>
+                <tr>    
+                    <td>Keywords</td><td>{{ record.keywords }}</td>
+                </tr>
+                <tr>    
+                    <td>Diet Type</td><td>{{ record.diet_types }}</td>
+                </tr>
+
+            {% endfor %}
+            <tbody>
+        </table>
+    </div>
+    <h1>Similar Recipies</h1>
+    <div class="table-wrapper">
+        <table class="fl-table">
+        <thead>
+        <tr>
+            <th><a>Recipe Name</a></th>
+            <th>Preparation Time</th>
+            <th>cookingTime</th>
+            <th>SkillLevel</th>
+            <th>Common Ingredients number</th>
+            <th>Ingredients name</th>
+            <th>Author</th>
+            <th>Mai multe Detalii</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for record in similar_recipies %}
+                <tr>
+                    <td>{{ record.recipe_name }}</td>
+                    <td>{{ record.preparationTime }}</td>
+                    <td>{{ record.cookingTime }}</td>
+                    <td>{{ record.skillLevel }}</td>
+                    <td>{{ record.commonIngredientsCount }}</td>
+                    <td>{{ record.commonIngredientNames}}</td>
+                    <td class="author-column">{% if record.author_name %}<a href="index.html?author_recipies={{ record.author_id }}">{{ record.author_name }}</a>{% else %}Without Author{% endif %}</td>
+                    <td class="author-column"><a href="?recipe_details={{record.recipe_id}}" target="_blank">Vezi Detalii</a></td>
+                    
+                </tr>
+                
+            {% endfor %}
+            <tbody>
+</body>
+</html>
