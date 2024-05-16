@@ -231,10 +231,10 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
 def run():
+    port = int(os.environ.get("PORT", 8000))
     print('Starting server...')
-    server_address = ('', 8000)
-    httpd = HTTPServer(server_address, MyHTTPRequestHandler)
-    print('Server running at http://localhost:8000')
-    httpd.serve_forever()
+    http_server = HTTPServer(('0.0.0.0', port), MyHTTPRequestHandler)
+    print(f"Server running at http://0.0.0.0:{port}")
+    http_server.serve_forever()
 
 run()
